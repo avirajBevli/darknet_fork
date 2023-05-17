@@ -689,7 +689,10 @@ float *get_network_output_gpu(network net)
     
     FILE *file;
     file = fopen("network.txt", "w");
-    if (file != NULL) {
+    if (file == NULL) {
+        printf("Error opening the file \n");
+    }
+    else{
         for(int i = 0; i < net.n; i++) {
             layer l = net.layers[i];
             for(int k=0; k<l.outputs; k++){
@@ -697,13 +700,9 @@ float *get_network_output_gpu(network net)
             }
             fprintf(file, "\n");
         }   
-        return -1.0;
-    }
-    else{
-        printf("Error opening the file \n");
+        printf("Numbers written to network.txt \n");
     }
     fclose(file);
-    printf("Numbers written to network.txt \n");
     
     int i;
     for(i = net.n-1; i > 0; --i) if(net.layers[i].type != COST) break;
