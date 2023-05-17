@@ -685,25 +685,6 @@ float *get_network_output_layer_gpu(network net, int i)
 
 float *get_network_output_gpu(network net)
 {
-    printf("///////// get_network_output_gpu function //////////// \n ");
-    
-    FILE *file;
-    file = fopen("network.txt", "w");
-    if (file == NULL) {
-        printf("Error opening the file \n");
-    }
-    else{
-        for(int i = 0; i < net.n; i++) {
-            layer l = net.layers[i];
-            for(int k=0; k<l.outputs; k++){
-                fprintf(file, "%f ", l.output[k]);
-            }
-            fprintf(file, "\n");
-        }   
-        printf("Numbers written to network.txt \n");
-    }
-    fclose(file);
-    
     int i;
     for(i = net.n-1; i > 0; --i) if(net.layers[i].type != COST) break;
     return get_network_output_layer_gpu(net, i);
@@ -760,7 +741,26 @@ float *network_predict_gpu(network net, float *input)
         CHECK_CUDA( cudaStreamSynchronize(stream0) );
         //printf(" ~cudaGraphLaunch \n");
     }
-
+    
+    printf("///////// writing network to file //////////// \n ");
+    
+    FILE *file;
+    file = fopen("network.txt", "w");
+    if (file == NULL) {
+        printf("Error opening the file \n");
+    }
+    else{
+        for(int i = 0; i < net.n; i++) {
+            layer l = net.layers[i];
+            for(int k=0; k<l.outputs; k++){
+                fprintf(file, "%f ", l.output[k]);
+            }
+            fprintf(file, "\n");
+        }   
+        printf("Numbers written to network.txt \n");
+    }
+    fclose(file);
+    
     float *out = get_network_output_gpu(net);
     reset_wait_stream_events();
     //cuda_free(state.input);   // will be freed in the free_network()
