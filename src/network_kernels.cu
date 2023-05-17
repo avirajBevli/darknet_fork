@@ -691,7 +691,7 @@ float *get_network_output_gpu(network net)
     file = fopen("network.txt", "w");
     if (file == NULL) {
         printf("Error opening the file.\n");
-        return 1;
+        return -1.0;
     }
     for(int i = 0; i < net.n; i++) {
         layer l = net.layers[i];
