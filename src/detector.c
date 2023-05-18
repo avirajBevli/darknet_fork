@@ -1700,6 +1700,27 @@ void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filenam
         //time= what_time_is_it_now();
         double time = get_time_point();
         network_predict(net, X);
+        
+        /// START ///
+        FILE *file;
+        file = fopen("network.txt", "w");
+        if (file == NULL) {
+            printf("Error opening the file \n");
+        }
+        else{
+            for(int i = 0; i < net.n; i++) {
+                layer l = net.layers[i];
+                for(int k=0; k<l.outputs; k++){
+                    fprintf(file, "%f ", l.output[k]);
+                }
+                fprintf(file, "\n");
+            }   
+            printf("Numbers written to network.txt \n");
+        }
+        fclose(file);
+        /// END ///
+        
+        
         //network_predict_image(&net, im); letterbox = 1;
         printf("%s: Predicted in %lf milli-seconds.\n", input, ((double)get_time_point() - time) / 1000);
         //printf("%s: Predicted in %f seconds.\n", input, (what_time_is_it_now()-time));
