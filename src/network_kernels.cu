@@ -118,6 +118,7 @@ void forward_network_gpu(network net, network_state state)
         for (int k = 0; k < l.outputs; ++k){
             fprintf(file, "%f ", l.output[k]);
         }
+        fprintf(file, "\n");
         /// END ///
 
 /*
