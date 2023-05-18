@@ -72,6 +72,9 @@ void forward_network_gpu(network net, network_state state)
 
     //printf("\n");
     state.workspace = net.workspace;
+    FILE *file;
+    file = fopen("network_outputs.txt", "w");
+    
     int i;
     for(i = 0; i < net.n; ++i){
         state.index = i;
@@ -107,14 +110,14 @@ void forward_network_gpu(network net, network_state state)
         state.input = l.output_gpu;
         //cudaDeviceSynchronize();
 
-        /*
+        /// START ///
         cuda_pull_array(l.output_gpu, l.output, l.outputs);
         cudaStreamSynchronize(get_cuda_stream());
         float avg_val = 0;
-        int k;
-        for (k = 0; k < l.outputs; ++k) avg_val += l.output[k];
-        printf(" i: %d - avg_val = %f \n", i, avg_val / l.outputs);
-        */
+        for (int k = 0; k < l.outputs; ++k){
+            fprintf(file, "%f ", l.output_gpu[k]);
+        }
+        /// END ///
 
 /*
         cuda_pull_array(l.output_gpu, l.output, l.batch*l.outputs);
@@ -135,6 +138,8 @@ void forward_network_gpu(network net, network_state state)
         }
 */
     }
+    printf("Numbers written to network.txt \n");
+    fclose(file);
 
     if (net.benchmark_layers) {
         printf("\n\nSorted by time (forward):\n");
