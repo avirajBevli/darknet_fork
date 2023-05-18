@@ -761,11 +761,11 @@ float *network_predict_ptr(network *net, float *input)
 float *network_predict(network net, float *input)
 {
 #ifdef GPU
-    pintf("In GPU of network_predict \n");
+    printf("In GPU of network_predict \n");
     if(gpu_index >= 0)  return network_predict_gpu(net, input);
 #endif
     
-    pintf("In normal of network_predict \n");
+    printf("In normal of network_predict \n");
     network_state state = {0};
     state.net = net;
     state.index = 0;
