@@ -59,7 +59,7 @@ int time_comparator(const void *pa, const void *pb)
 
 void forward_network_gpu(network net, network_state state)
 {
-    printf("In function forward_network_gpu //////////////// \n);
+    printf("In function forward_network_gpu //////////////// \n");
     static time_benchmark_layers *avg_time_per_layer = NULL;
     static time_benchmark_layers *sorted_avg_time_per_layer = NULL;
     double start_time, end_time;
@@ -116,7 +116,7 @@ void forward_network_gpu(network net, network_state state)
         cudaStreamSynchronize(get_cuda_stream());
         float avg_val = 0;
         for (int k = 0; k < l.outputs; ++k){
-            fprintf(file, "%f ", l.output_gpu[k]);
+            fprintf(file, "%f ", l.output[k]);
         }
         /// END ///
 
@@ -715,8 +715,10 @@ float *network_predict_gpu(network net, float *input)
     static cudaGraphExec_t instance;
 
     if ((*net.cuda_graph_ready) == 0) {
+        printf("cuda graph ready = 0 \n");
         static cudaGraph_t graph;
         if (net.use_cuda_graph == 1) {
+            printf("use cuda graph = 1 \n");
             int i;
             for (i = 0; i < 16; ++i) switch_stream(i);
 
@@ -741,6 +743,7 @@ float *network_predict_gpu(network net, float *input)
         CHECK_CUDA(cudaStreamSynchronize(get_cuda_stream()));
     }
     else {
+        printf("cuda graph ready = 1 \n");
         cudaStream_t stream0 = switch_stream(0);
         //printf(" cudaGraphLaunch \n");
         CHECK_CUDA( cudaGraphLaunch(instance, stream0) );
