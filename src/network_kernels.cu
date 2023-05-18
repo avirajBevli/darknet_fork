@@ -139,7 +139,7 @@ void forward_network_gpu(network net, network_state state)
         }
 */
     }
-    printf("Numbers written to network.txt \n");
+    printf("Numbers written to network_outputs.txt \n");
     fclose(file);
 
     if (net.benchmark_layers) {
