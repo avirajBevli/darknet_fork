@@ -1694,9 +1694,22 @@ void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filenam
         //box *boxes = calloc(l.w*l.h*l.n, sizeof(box));
         //float **probs = calloc(l.w*l.h*l.n, sizeof(float*));
         //for(j = 0; j < l.w*l.h*l.n; ++j) probs[j] = (float*)xcalloc(l.classes, sizeof(float));
-
+        
         float *X = sized.data;
-
+        /// START ///
+        File *file_input_image = fopen("input_image.txt", "w");
+        if(fill==NULL){
+            printf("Error opening input text file ]n");
+        }
+        else{
+            for(int i=0;i<224*224*3;i++){
+                fprintf(file, "%f ", X[i]);
+            }
+            printf("Input image written to input_image.txt \n");
+        }
+        fclose(file_input_image);
+        /// END ///
+        
         //time= what_time_is_it_now();
         double time = get_time_point();
         network_predict(net, X);
