@@ -1697,13 +1697,13 @@ void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filenam
         
         float *X = sized.data;
         /// START ///
-        File *file_input_image = fopen("input_image.txt", "w");
-        if(fill==NULL){
+        FILE *file_input_image = fopen("input_image.txt", "w");
+        if(file_input_image==NULL){
             printf("Error opening input text file ]n");
         }
         else{
             for(int i=0;i<224*224*3;i++){
-                fprintf(file, "%f ", X[i]);
+                fprintf(file_input_image, "%f ", X[i]);
             }
             printf("Input image written to input_image.txt \n");
         }
